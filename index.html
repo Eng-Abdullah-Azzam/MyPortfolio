@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdullah Mamdouh | Software Engineer</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f5;
+            --text-color: #18181b;
+            --accent-color: #000000;
+            --card-bg: #ffffff;
+            --border-color: #e4e4e7;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #09090b;
+            --text-color: #fafafa;
+            --accent-color: #ffffff;
+            --card-bg: #18181b;
+            --border-color: #27272a;
+            --nav-bg: rgba(9, 9, 11, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #71717a;
+            margin-bottom: 2rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .profile-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        #about p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-placeholder {
+            width: 100%;
+            height: 200px;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img-placeholder::after {
+            content: 'Click to Enlarge / Pan / Zoom';
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .card-img-placeholder:hover::after {
+            opacity: 1;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        #media-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .modal-canvas {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            touch-action: none;
+        }
+        
+        .modal-canvas:active {
+            cursor: grabbing;
+        }
+
+        #modal-image {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            user-select: none;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--card-bg);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            section {
+                padding: 8rem 1.5rem 4rem 1.5rem;
+            }
+            #hero {
+                flex-direction: column-reverse;
+                justify-content: center;
+                text-align: center;
+                gap: 2rem;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-btns {
+                justify-content: center;
+            }
+            .profile-img {
+                width: 200px;
+                height: 200px;
+            }
+            #modal-close {
+                top: 10px;
+                right: 20px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><strong>Abdullah Mamdouh</strong></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <button class="theme-toggle" id="theme-btn">Toggle Light</button>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Building Scalable Interfaces & Robust Logic.</h1>
+            <p>I am Abdullah Mamdouh, an aspiring Software Engineer studying Computer Engineering at the British University in Egypt. I specialize in full-stack web development.</p>
+            <div class="hero-btns">
+                <a href="#projects" class="btn">View Projects</a>
+                <a href="https://github.com/dummy-url" target="_blank" class="btn btn-outline">GitHub</a>
+            </div>
+        </div>
+        <img src="assets/portfolio profile pic.png" alt="Abdullah Mamdouh" class="profile-img" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22250%22 style=%22background:%2327272a%22%3E%3C/svg%3E'">
+    </section>
+
+    <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+    <section id="about">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem;">About Me</h2>
+        <p>Driven by a passion for building complete applications where I can engineer every layer of the experience, I specialize in crafting full-stack web solutions. I don't just want things to look good; I want total architectural control over the underlying logic and user experience.</p>
+        <p>My technical sweet spot lies at the intersection of rigorous JavaScript logic, particularly complex form validation and state-driven UX logic and fluid CSS animations that bring interfaces to life. Currently pursuing a Bachelor of Science in Computer Engineering at BUE, my primary objective is to bridge the gap between academic theory and industry practice, tackling complex development challenges to solidify my expertise and stand out in the field.</p>
+        
+        <div class="skills-container">
+            <span class="skill-tag">JavaScript (ES6+)</span>
+            <span class="skill-tag">HTML5 / CSS3</span>
+            <span class="skill-tag">Python & Flask</span>
+            <span class="skill-tag">C++</span>
+            <span class="skill-tag">OpenAI API</span>
+            <span class="skill-tag">UI/UX Animation</span>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem;">Featured Projects</h2>
+        <div class="projects-grid">
+            
+            <div class="card">
+                <div class="card-img-placeholder" onclick="openModal(this)">
+                    <img src="assets/Aihome.png" alt="CV Builder Interface" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="card-content">
+                    <h3>AI-Powered CV Builder</h3>
+                    <p style="font-size: 0.9rem; color: #71717a; margin-bottom: 1rem;">Full-stack web application enabling users to generate, edit, and export ATS-compliant resumes using an AI-driven bilingual interface and intelligent document parsing.</p>
+                    <div class="card-links">
+                        <a href="https://github.com/dummy-url-cv-builder" target="_blank">Source Code &rarr;</a>
+                        <a href="https://myperfectresume.onrender.com/" target="_blank">Live App &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder" onclick="openModal(this)">
+                    <img src="assets/fekrat home.png" alt="Fekrat Cuts App" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="card-content">
+                    <h3>Fekrat Cuts</h3>
+                    <p style="font-size: 0.9rem; color: #71717a; margin-bottom: 1rem;">Responsive web application and digital conversion funnel for local clientele, featuring an interactive media gallery and cross-device optimization.</p>
+                    <div class="card-links">
+                        <a href="https://github.com/dummy-url-fekrat" target="_blank">Source Code &rarr;</a>
+                        <a href="https://eng-abdullah-mamdouh.github.io/Fekrat-Cuts/" target="_blank">Live App &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="media-modal">
+        <span id="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-canvas" id="modal-canvas">
+            <img id="modal-image" src="" alt="Zoomable Image">
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Abdullah Mamdouh.</p>
+    </footer>
+
+    <script>
+        const themeBtn = document.getElementById('theme-btn');
+        const htmlElement = document.documentElement;
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeBtn.textContent = 'Toggle Dark';
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeBtn.textContent = 'Toggle Light';
+            }
+        });
+
+        const modal = document.getElementById('media-modal');
+        const modalImg = document.getElementById('modal-image');
+        const canvas = document.getElementById('modal-canvas');
+
+        let scale = 1;
+        let panning = false;
+        let pointX = 0;
+        let pointY = 0;
+        let startX = 0;
+        let startY = 0;
+
+        function setTransform() {
+            modalImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        }
+
+        function openModal(element) {
+            const clickedImg = element.querySelector('img');
+            if (clickedImg) {
+                modalImg.src = clickedImg.src;
+                modalImg.alt = clickedImg.alt;
+            }
+            
+            modal.style.display = "flex";
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            setTransform();
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            panning = true;
+            startX = e.clientX - pointX;
+            startY = e.clientY - pointY;
+            modalImg.style.transition = 'none';
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!panning) return;
+            pointX = e.clientX - startX;
+            pointY = e.clientY - startY;
+            setTransform();
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            panning = false;
+            modalImg.style.transition = 'transform 0.1s ease-out';
+        });
+        
+        canvas.addEventListener('mouseleave', () => {
+            panning = false;
+            modalImg.style.transition = 'transform 0.1s ease-out';
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if(e.touches.length === 1) {
+                panning = true;
+                startX = e.touches[0].clientX - pointX;
+                startY = e.touches[0].clientY - pointY;
+                modalImg.style.transition = 'none';
+            }
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!panning || e.touches.length !== 1) return;
+            e.preventDefault();
+            pointX = e.touches[0].clientX - startX;
+            pointY = e.touches[0].clientY - startY;
+            setTransform();
+        }, {passive: false});
+
+        canvas.addEventListener('touchend', () => {
+            panning = false;
+            modalImg.style.transition = 'transform 0.1s ease-out';
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomSpeed = 0.1;
+            const delta = e.deltaY < 0 ? 1 : -1; 
+            scale += delta * zoomSpeed;
+            scale = Math.min(Math.max(0.5, scale), 4);
+            setTransform();
+        }, {passive: false});
+    </script>
+</body>
+</html>
